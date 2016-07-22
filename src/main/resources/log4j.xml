@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{DATE} ${web-context-root} %5p %c{1}:%L - [%X{username}] - %m %n" />
+		</layout>
+	</appender>
+
+	<appender name="roll" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="applog/news.log" />
+		<param name="DatePattern" value=".yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%d{DATE} ${web-context-root} %5p %c{1}:%L - [%X{username}] - %m %n" />
+		</layout>
+	</appender>
+
+	<category name="com.snn">
+		<priority value="${log.level}"></priority>
+	</category>
+
+	<!--<category name="com.snn.util.TransactionAspect">
+		<priority value="fatal"></priority>
+	</category>
+
+	<category name="com.snn.dao.GenericDAOImpl">
+		<priority value="fatal"></priority>
+	</category>-->
+
+	<category name="org.hibernate">
+		<priority value="error"></priority>
+	</category>
+	<category name="org.springframework">
+		<priority value="error"></priority>
+	</category>
+	<category name="org.unitils">
+		<priority value="error"></priority>
+	</category>
+	<category name="org.jboss.seam">
+		<priority value="error"></priority>
+	</category>
+	<category name="org.icefaces">
+		<priority value="error"></priority>
+	</category>
+	<category name="org.ajax4jsf">
+		<priority value="error" />
+	</category>
+	<category name="org.richfaces">
+		<priority value="error" />
+	</category>
+	<category name="org.apache.log4j.xml">
+		<priority value="debug" />
+	</category>
+	<category name="org.hibernate.SQL">
+		<priority value="trace"></priority>
+	</category>
+	<category name="org.hibernate.type">
+		<priority value="error"></priority>
+	</category>
+	<category name="org.hibernate.event">
+		<priority value="error"></priority>
+	</category>
+	<category name="org.hibernate.persister">
+		<priority value="error"></priority>
+	</category>
+	<category name="net.sf.ehcache">
+		<priority value="error"></priority>
+	</category>
+	<category name="com.icesoft.faces">
+		<priority value="fatal"></priority>
+	</category>
+
+	<root>
+		<priority value="error"></priority>
+        <appender-ref ref="STDOUT" />
+		<appender-ref ref="roll" />
+	</root>
+
+</log4j:configuration>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- For times when you just need to invoke a method on a specific object -->
+    <bean id="deleteOldNewsJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="newsJob"/>
+        <property name="targetMethod" value="DeleteOldNews"/>
+    </bean>
+    <bean id="updateNewsJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="newsJob"/>
+        <property name="targetMethod" value="UpdateNews"/>
+    </bean>
+
+    <!-- Run the job every 1 seconds  -->
+    <bean id="cronTriggerUpdateNews" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="deleteOldNewsJobDetail"/>
+        <property name="cronExpression" value="0 0/1 * 1/1 * ? *"/>
+    </bean>
+    <bean id="cronTriggerDeleteNews" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="updateNewsJobDetail"/>
+        <property name="cronExpression" value="	0 0/20 * 1/1 * ? *"/>
+    </bean>
+
+    <!-- Scheduler factory bean to glue together jobDetails and triggers to Configure Quartz Scheduler -->
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="jobDetails">
+            <list>
+                <ref bean="deleteOldNewsJobDetail"/>
+                <ref bean="updateNewsJobDetail"/>
+            </list>
+        </property>
+        <property name="triggers">
+            <list>
+                <ref bean="cronTriggerUpdateNews"/>
+                <ref bean="cronTriggerDeleteNews"/>
+            </list>
+        </property>
+    </bean>
+</beans>
